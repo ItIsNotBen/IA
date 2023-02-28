@@ -41,10 +41,56 @@ public class Player {
 
 
 
-    public void placeTile(int row, int col) {
+    public void placeTile(int i, int j, char tile) {
+        grid[i][j] = tile;
+    }
 
+
+    public void maximum(){
 
     }
+
+    public void extendGrid(int i, int j) {
+        char[][] newGridRight = new char[grid.length][j+5];
+        char[][] newGridTop = new char[grid.length + (5-i)][grid[i].length];
+        char[][] newGridLeft = new char[grid.length][grid[i].length + (5 - j)];
+        char[][] newGridBottom = new char[(i+1) + 5][grid[i].length];
+        char[][] newGrid = new char[i + 5][j+5];
+
+        if (grid.length> grid.length + (5-i) && grid.length > (i+1) + 5) {
+            newGrid = newGridRight;
+        }
+        if (grid.length + (5-i) > grid.length && grid.length + (5-i) > (i+1) + 5) {
+            newGrid = newGridTop;
+        }
+        if (grid[i].length > grid[i].length + (5 - j) && grid[i].length > j+5) {
+            newGrid = newGridLeft;
+        }
+        if ((i+1) + 5 > grid.length && (i+1) + 5 > grid.length + (5-i)) {
+            newGrid = newGridBottom;
+        }
+
+
+
+        if (grid.length - i < 5) {
+
+        }
+
+
+
+        for(int n = 0; n < newGrid.length; n++) {
+            for(int m = 0; m < newGrid[n].length; m++) {
+                newGrid[n][m] = ' ';
+            }
+        }
+
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid[x].length; y++) {
+                newGrid[x][y] = grid[x][y];
+            }
+        }
+        grid = newGrid;
+        }
 
     public int getPoints() {
         return points;
@@ -82,9 +128,9 @@ public class Player {
 
     public String[] findWords() {
 
-        char[][] tempGrid = {{0, 0, 0, 't', 'r', 'e', 'e', 0, 0}, {0, 0, 0, 'r', 0, 0, 0, 0, 0}, {0, 0, 0, 'u', 0, 0, 0, 0, 0}, {0, 0, 0, 'c', 0, 0, 0, 0, 0}, {0, 0, 0, 'k', 0, 0, 0, 0, 0}};
-
-        grid = tempGrid;
+//        char[][] tempGrid = {{0, 0, 0, 't', 'r', 'e', 'e', 0, 0}, {0, 0, 0, 'r', 0, 0, 0, 0, 0}, {0, 0, 0, 'u', 0, 0, 0, 0, 0}, {0, 0, 0, 'c', 0, 0, 0, 0, 0}, {0, 0, 0, 'k', 0, 0, 0, 0, 0}};
+//
+//        grid = tempGrid;
 
         ArrayList<String> words = new ArrayList<String>();
 
@@ -96,7 +142,7 @@ public class Player {
                 }
 
                 // while south is occupied, add letter until vacant spot reached
-                if (i + 1 < grid.length && grid[i + 1][j] != 0) {
+                if (i < grid.length - 1 && grid[i + 1][j] != 0 && (i == 0 || grid[i - 1][j] == 0)) {
                     StringBuilder word = new StringBuilder();
                     int x = i;
                     while (x < grid.length && grid[x][j] != 0) {
@@ -104,9 +150,10 @@ public class Player {
                         x++;
                     }
                     words.add(word.toString());
+
                 }
                 // while west is occupied, add letter until blank spot reached
-                if (j + 1 < grid[i].length && grid[i][j + 1] != 0) {
+                if (j + 1 < grid[i].length && grid[i][j + 1] != 0 && (j == 0 || grid[i][j - 1] == 0)) {
                     StringBuilder word = new StringBuilder();
                     int x = j;
                     while (x < grid[i].length && grid[i][x] != 0) {
@@ -115,10 +162,10 @@ public class Player {
                     }
                     words.add(word.toString());
                 }
+
             }
         }
-
-        return words.toArray(new String[1000]);
+        return words.toArray(new String[0]);
     }
 
 }

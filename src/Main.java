@@ -10,10 +10,30 @@ public class Main {
 //        game.dealTiles(14);
 //        game.displayState();
 
-
+//
         Player player = new Player("Ben");
+//
 
-        System.out.println(Arrays.toString(player.findWords()));
+
+
+        player.placeTile(5,5,'t');
+//        player.placeTile(6,4,'r');
+//        player.placeTile(7,4,'e');
+//        player.placeTile(8,4,'e');
+//
+//
+        player.displayGrid();
+
+        player.extendGrid(5,5);
+
+
+        player.displayGrid();
+
+        player.extendGrid(5,5);
+
+//        System.out.println(Arrays.toString(player.findWords()));
+
+
 
     }
 }
