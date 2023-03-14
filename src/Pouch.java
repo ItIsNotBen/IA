@@ -28,6 +28,15 @@ public class Pouch {
         return yieldedTiles;
     }
 
+    public char yieldTile() {
+        char yieldedTile = (char) tiles.remove(0);
+        return yieldedTile;
+    }
+
+    public boolean isEmpty() {
+        return tiles.isEmpty();
+    }
+
 
 
 

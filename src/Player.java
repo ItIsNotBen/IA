@@ -2,6 +2,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 
 public class Player {
     private String name;
@@ -12,7 +13,7 @@ public class Player {
     private char selectedHandTile;
 
 
-    Player(String name){
+    Player(String name) {
         this.name = name;
         points = 0;
         grid = new char[10][10];
@@ -21,13 +22,13 @@ public class Player {
         selectedTile = ' ';
     }
 
-    public void moveTile(int row, int column){
+    public void moveTile(int row, int column) {
         grid[row][column] = selectedTile;
         selectedTile = ' ';
     }
-    
+
     // do select tile method
-    public char getSelectedTile(){
+    public char getSelectedTile() {
         return selectedTile;
     }
 
@@ -40,46 +41,59 @@ public class Player {
     }
 
 
-
     public void placeTile(int i, int j, char tile) {
         grid[i][j] = tile;
+        extendGrid(i, j);
+        hand.remove(tile);
     }
 
-
-    public void maximum(){
-
-    }
 
     public void extendGrid(int i, int j) {
-        char[][] newGridRight = new char[grid.length][j+5];
-        char[][] newGridTop = new char[grid.length + (5-i)][grid[i].length];
-        char[][] newGridLeft = new char[grid.length][grid[i].length + (5 - j)];
-        char[][] newGridBottom = new char[(i+1) + 5][grid[i].length];
-        char[][] newGrid = new char[i + 5][j+5];
 
-        if (grid.length> grid.length + (5-i) && grid.length > (i+1) + 5) {
-            newGrid = newGridRight;
-        }
-        if (grid.length + (5-i) > grid.length && grid.length + (5-i) > (i+1) + 5) {
-            newGrid = newGridTop;
-        }
-        if (grid[i].length > grid[i].length + (5 - j) && grid[i].length > j+5) {
+        char[][] newGrid;
+        int margin = 2;
+
+        boolean atTopEdge = i < margin;
+        boolean atLeftEdge = j < margin;
+        boolean atBottomEdge = grid.length - (i + 1) < margin;
+        boolean atRightEdge = grid[i].length - (j + 1) < margin;
+
+
+        if (atTopEdge) {
+            if (atRightEdge) {
+                char[][] newGridTopRight = new char[grid.length + (margin - i)][(j + 1) + margin];
+                newGrid = newGridTopRight;
+            } else if (atLeftEdge) {
+                char[][] newGridTopLeft = new char[grid.length + (margin - i)][grid[i].length + (margin - j)];
+                newGrid = newGridTopLeft;
+            } else {
+                char[][] newGridTop = new char[grid.length + (margin - i)][grid[i].length];
+                newGrid = newGridTop;
+            }
+        } else if (atBottomEdge) {
+            if (atRightEdge) {
+                char[][] newGridBottomRight = new char[(i + 1) + margin][(j + 1) + margin];
+                newGrid = newGridBottomRight;
+            } else if (atLeftEdge) {
+                char[][] newGridBottomLeft = new char[(i + 1) + margin][grid[i].length + (margin - j)];
+                newGrid = newGridBottomLeft;
+            } else {
+                char[][] newGridBottom = new char[(i + 1) + margin][grid[i].length];
+                newGrid = newGridBottom;
+            }
+        } else if (atLeftEdge) {
+            char[][] newGridLeft = new char[grid.length][grid[i].length + (margin - j)];
             newGrid = newGridLeft;
-        }
-        if ((i+1) + 5 > grid.length && (i+1) + 5 > grid.length + (5-i)) {
-            newGrid = newGridBottom;
-        }
-
-
-
-        if (grid.length - i < 5) {
-
+        } else if (atRightEdge) {
+            char[][] newGridRight = new char[grid.length][(j + 1) + margin];
+            newGrid = newGridRight;
+        } else {
+            return;
         }
 
 
-
-        for(int n = 0; n < newGrid.length; n++) {
-            for(int m = 0; m < newGrid[n].length; m++) {
+        for (int n = 0; n < newGrid.length; n++) {
+            for (int m = 0; m < newGrid[n].length; m++) {
                 newGrid[n][m] = ' ';
             }
         }
@@ -90,21 +104,25 @@ public class Player {
             }
         }
         grid = newGrid;
-        }
+    }
 
     public int getPoints() {
         return points;
     }
 
     public void displayGrid() {
-        for(int i = 0; i < grid.length; i++) {
-            System.out.println(Arrays.toString(grid[i]));
+        for (int i = 0; i < grid.length; i++) {
+            String line = Integer.toString(i) + "  " + Arrays.toString(grid[i]);
+            if (Integer.toString(i).length() == 1) {
+                line = Integer.toString(i) + "   " + Arrays.toString(grid[i]);
+            }
+            System.out.println(line);
         }
     }
 
     private void initGrid() {
-        for(int i = 0; i < grid.length; i++) {
-            for(int j = 0; j < grid[i].length; j++) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
 
                 grid[i][j] = ' ';
             }
@@ -113,9 +131,26 @@ public class Player {
     }
 
     public void assignTiles(char[] tiles) {
-        for(int i = 0; i < tiles.length; i++) {
+        for (int i = 0; i < tiles.length; i++) {
             hand.add(tiles[i]);
         }
+    }
+
+    public void assignTile(char tile) {
+        hand.add(tile);
+    }
+
+    public boolean hasTiles() {
+        if (hand.size() > 0) {
+            return true;
+    } else {
+            return false;
+        }
+    }
+
+    public boolean hasTile(char tile) {
+        return hand.contains(tile);
+
     }
 
     public void displayTiles() {

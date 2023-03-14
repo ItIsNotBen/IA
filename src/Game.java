@@ -1,34 +1,45 @@
 public class Game {
-    private Player[] players;
+    private Player player;
     private Pouch pouch;
 
 
-   Game(String[] playerNames, int numOfTiles) {
-       players = new Player[playerNames.length];
-       for(int i = 0; i < players.length; i++) {
-           players[i] = new Player(playerNames[i]);
-       }
-
+   Game(String playerName, int numOfTiles) {
+       player = new Player(playerName);
        pouch = new Pouch(numOfTiles);
 
    }
    public void dealTiles(int amountTilesGiven) {
-       for(int i = 0; i < players.length; i++) {
-           char[] givenTiles = pouch.yieldTiles(amountTilesGiven);
-           players[i].assignTiles(givenTiles);
+       char[] givenTiles = pouch.yieldTiles(amountTilesGiven);
+       player.assignTiles(givenTiles);
        }
-   }
+
+       public void addTile() {
+       char givenTile = pouch.yieldTile();
+       player.assignTile(givenTile);
+       }
+
+       public boolean isPouchEmpty() {
+       return pouch.isEmpty();
+       }
+
+
 
    public void displayState() {
        System.out.println("Pouch tiles: ");
        pouch.displayTiles();
-       for (int i = 0; i < players.length; i++) {
-           System.out.println(players[i].getName() +"'s tiles: ");
-           players[i].displayTiles();
+       System.out.println(player.getName() +"'s tiles: ");
+       player.displayTiles();
        }
-   }
 
 
+       public void displayPlayerTiles() {
+           System.out.println(player.getName() + "'s tiles: ");
+           player.displayTiles();
+       }
 
+       public Player getPlayer() {
+       return player;
+       }
 
 }
+
