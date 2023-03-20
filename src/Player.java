@@ -44,8 +44,10 @@ public class Player {
     public void placeTile(int i, int j, char tile) {
         grid[i][j] = tile;
         extendGrid(i, j);
-        hand.remove(tile);
+        hand.remove(Character.valueOf(tile));
     }
+
+
 
 
     public void extendGrid(int i, int j) {

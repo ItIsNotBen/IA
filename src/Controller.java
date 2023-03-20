@@ -9,19 +9,21 @@ public class Controller {
 
 
     Controller() {
-        identify();
+       // identify();
+        playerName = "Ben";
         game = new Game(playerName, 144);
 
     }
 
     public void run() {
-        game.dealTiles(14);
-        askToStart();
-        game.displayPlayerTiles();
-        placeTile();
-        step3();
-        // prompts, what tiles do u want where
-
+        Player player = new Player(playerName);
+        while (player.hasTiles()) {
+            game.dealTiles(14);
+            game.displayPlayerTiles();
+            placeTile();
+            step3();
+        }
+        run();
     }
 
     private void identify() {
@@ -48,17 +50,7 @@ public class Controller {
         char tile = 0;
         Scanner scanner = new Scanner(System.in);
 
-
-        System.out.println("Enter the tile you'd like to place: ");
-        String sTile = scanner.nextLine();
-        if (player.hasTile(sTile.charAt(0))) {
-            tile = sTile.charAt(0);
-        } else {
-            System.out.println("Uh oh. Looks like you don't have that tile. Try place a tile that you have been given!");
-            player.displayTiles();
-            placeTile();
-        }
-
+        tile = selectTile();
 
         System.out.println("Where would you like to place your tile?");
         System.out.println("Enter your x coordinate: ");
@@ -72,6 +64,28 @@ public class Controller {
         player.findWords();
         player.displayTiles();
         placeTile();
+    }
+
+    private char selectTile() {
+        Player player =  game.getPlayer();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the tile you'd like to place: ");
+        String sTile = scanner.nextLine();
+        boolean hasTile = player.hasTile(sTile.charAt(0));
+        boolean tooLong = sTile.length() > 1;
+        if (tooLong) {
+            System.out.println("Uh oh. Looks like you don't have that tile. Try place a tile that you have been given!");
+            char tile = selectTile();
+            return tile;
+        } else if (!hasTile) {
+            System.out.println("Uh oh. Looks like you don't have that tile. Try place a tile that you have been given!");
+            char tile = selectTile();
+            return tile;
+        } else {
+            char tile = sTile.charAt(0);
+            return tile;
+        }
     }
 
 
