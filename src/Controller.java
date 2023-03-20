@@ -17,13 +17,12 @@ public class Controller {
 
     public void run() {
         Player player = new Player(playerName);
-        while (player.hasTiles()) {
-            game.dealTiles(14);
-            game.displayPlayerTiles();
-            placeTile();
-            step3();
-        }
-        run();
+        game.dealTiles(14);
+        // askToStart();
+        game.displayPlayerTiles();
+        placeTile();
+        step3();
+
     }
 
     private void identify() {
@@ -71,21 +70,21 @@ public class Controller {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter the tile you'd like to place: ");
-        String sTile = scanner.nextLine();
+        String sTile = scanner.next();
         boolean hasTile = player.hasTile(sTile.charAt(0));
         boolean tooLong = sTile.length() > 1;
+        char tile;
         if (tooLong) {
             System.out.println("Uh oh. Looks like you don't have that tile. Try place a tile that you have been given!");
-            char tile = selectTile();
-            return tile;
+            tile = selectTile();
         } else if (!hasTile) {
             System.out.println("Uh oh. Looks like you don't have that tile. Try place a tile that you have been given!");
-            char tile = selectTile();
-            return tile;
+            tile = selectTile();
         } else {
-            char tile = sTile.charAt(0);
-            return tile;
+            tile = sTile.charAt(0);
+
         }
+        return tile;
     }
 
 
