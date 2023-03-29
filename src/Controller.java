@@ -7,22 +7,19 @@ public class Controller {
     private String playerName;
 
 
-
     Controller() {
-       // identify();
+        // identify();
         playerName = "Ben";
         game = new Game(playerName, 144);
 
     }
 
     public void run() {
-        Player player = new Player(playerName);
         game.dealTiles(14);
+        // entering playing stage:
         // askToStart();
         game.displayPlayerTiles();
         placeTile();
-        step3();
-
     }
 
     private void identify() {
@@ -46,7 +43,7 @@ public class Controller {
         player.displayGrid();
         int x;
         int y;
-        char tile = 0;
+        char tile;
         Scanner scanner = new Scanner(System.in);
 
         tile = selectTile();
@@ -62,11 +59,12 @@ public class Controller {
         player.placeTile(x, y, tile);
         player.findWords();
         player.displayTiles();
-        placeTile();
+        step3();
+
     }
 
     private char selectTile() {
-        Player player =  game.getPlayer();
+        Player player = game.getPlayer();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter the tile you'd like to place: ");
@@ -88,17 +86,22 @@ public class Controller {
     }
 
 
-
-    public void step3() {
+    public void () {
         Player player = game.getPlayer();
-        if (!player.hasTiles()) {
+
+        if (player.hasTiles() && !game.isPouchEmpty()) {
+            placeTile();
+        } else if (!player.hasTiles()) {
             System.out.println("It looks like you have used up all your tiles! Well done!");
             System.out.println("Here is an extra tile: ");
             game.addTile();
         } else if (!player.hasTiles() && game.isPouchEmpty()) {
+            System.out.println("You have finished all your tiles, there are no more in the pouch! Well done!");
             run();
         }
-        }
+    }
+}
+
 
 //    }
 
@@ -140,4 +143,4 @@ public class Controller {
 
 
 
-}
+
