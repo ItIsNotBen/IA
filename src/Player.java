@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,8 +15,7 @@ public class Player {
     private char selectedTile;
     private char selectedHandTile;
 
-
-    Player(String name) {
+    private Player(String name) {
         this.name = name;
         points = 0;
         grid = new char[10][10];
@@ -46,8 +48,6 @@ public class Player {
         extendGrid(i, j);
         hand.remove(Character.valueOf(tile));
     }
-
-
 
 
     public void extendGrid(int i, int j) {
@@ -145,7 +145,7 @@ public class Player {
     public boolean hasTiles() {
         if (hand.size() > 0) {
             return true;
-    } else {
+        } else {
             return false;
         }
     }
@@ -171,7 +171,7 @@ public class Player {
 
         ArrayList<String> words = new ArrayList<String>();
 
-        for(int i = 0; i < grid.length; i++) {
+        for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
 
                 if (grid[i][j] == 0) {
@@ -203,6 +203,24 @@ public class Player {
             }
         }
         return words.toArray(new String[0]);
+    }
+
+    public boolean checkWord() {
+        boolean validWord;
+        String[] foundWords = findWords();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("dictionary.txt"));
+            if (foundWords[foundWords.length - 1] != br.readLine()) {
+                br.readLine();
+            }
+            br.close();
+            validWord = foundWords[foundWords.length - 1] == br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            validWord = false;
+        }
+
+        return validWord;
     }
 
 }

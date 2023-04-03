@@ -16,10 +16,11 @@ public class Controller {
 
     public void run() {
         game.dealTiles(14);
-        // entering playing stage:
+        // entering playing stage: choosing & placing tiles, creating their words, checking their words, gaining points, 'peel' to get tiles
+        playingStage();
+
         // askToStart();
-        game.displayPlayerTiles();
-        placeTile();
+        // placeTile();
     }
 
     private void identify() {
@@ -41,6 +42,7 @@ public class Controller {
         System.out.println("Here is your grid: ");
         Player player = game.getPlayer();
         player.displayGrid();
+        game.displayPlayerTiles();
         int x;
         int y;
         char tile;
@@ -52,15 +54,12 @@ public class Controller {
         System.out.println("Enter your x coordinate: ");
         x = scanner.nextInt();
 
-
         System.out.println("Enter your y coordinate: ");
         y = scanner.nextInt();
 
         player.placeTile(x, y, tile);
         player.findWords();
         player.displayTiles();
-        step3();
-
     }
 
     private char selectTile() {
@@ -86,18 +85,19 @@ public class Controller {
     }
 
 
-    public void () {
+    public void playingStage() {
         Player player = game.getPlayer();
 
-        if (player.hasTiles() && !game.isPouchEmpty()) {
+        if (player.hasTiles()) {
             placeTile();
-        } else if (!player.hasTiles()) {
+            playingStage();
+        } else if (!player.hasTiles() && !game.isPouchEmpty()) {
             System.out.println("It looks like you have used up all your tiles! Well done!");
             System.out.println("Here is an extra tile: ");
             game.addTile();
+            playingStage();
         } else if (!player.hasTiles() && game.isPouchEmpty()) {
             System.out.println("You have finished all your tiles, there are no more in the pouch! Well done!");
-            run();
         }
     }
 }
