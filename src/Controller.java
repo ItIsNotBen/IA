@@ -1,6 +1,8 @@
 import java.sql.SQLOutput;
 import java.util.Scanner;
 
+// Top level class - sequences the game
+
 public class Controller {
 
     private Game game;
@@ -12,6 +14,10 @@ public class Controller {
         playerName = "Ben";
         game = new Game(playerName, 144);
 
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public void run() {
@@ -43,6 +49,7 @@ public class Controller {
         Player player = game.getPlayer();
         player.displayGrid();
         game.displayPlayerTiles();
+        WordLibrary wl = game.getWordLibrary();
         int x;
         int y;
         char tile;
@@ -58,7 +65,12 @@ public class Controller {
         y = scanner.nextInt();
 
         player.placeTile(x, y, tile);
-        player.findWords();
+        System.out.println("Check for word? Y or N: ");
+        if (scanner.nextLine() == "Y" && player.hasValidWords(wl)) {
+            player.findWords();
+        } else {
+
+        }
         player.displayTiles();
     }
 
@@ -70,35 +82,38 @@ public class Controller {
         String sTile = scanner.next();
         boolean hasTile = player.hasTile(sTile.charAt(0));
         boolean tooLong = sTile.length() > 1;
-        char tile;
+
+        if (!tooLong && hasTile) {
+            return sTile.charAt(0);
+        }
+
         if (tooLong) {
             System.out.println("Uh oh. Looks like you don't have that tile. Try place a tile that you have been given!");
-            tile = selectTile();
         } else if (!hasTile) {
             System.out.println("Uh oh. Looks like you don't have that tile. Try place a tile that you have been given!");
-            tile = selectTile();
-        } else {
-            tile = sTile.charAt(0);
-
         }
-        return tile;
+        return selectTile();
     }
 
 
     public void playingStage() {
         Player player = game.getPlayer();
 
+
+        if (!player.hasTiles() && game.isPouchEmpty()) {
+            System.out.println("You have finished all your tiles, there are no more in the pouch! Well done!");
+            return;
+        }
+
         if (player.hasTiles()) {
             placeTile();
-            playingStage();
-        } else if (!player.hasTiles() && !game.isPouchEmpty()) {
+            game.displayState();
+        } else if (!player.hasTiles() && !game.isPouchEmpty() && player.hasValidWords(game.getWordLibrary())) {
             System.out.println("It looks like you have used up all your tiles! Well done!");
             System.out.println("Here is an extra tile: ");
             game.addTile();
-            playingStage();
-        } else if (!player.hasTiles() && game.isPouchEmpty()) {
-            System.out.println("You have finished all your tiles, there are no more in the pouch! Well done!");
         }
+        playingStage();
     }
 }
 

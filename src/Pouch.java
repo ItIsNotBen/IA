@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+//Third level class - Creates the pouch of letters and has methods to organise each players' take
+
 public class Pouch {
     private ArrayList tiles;
 
@@ -36,6 +38,8 @@ public class Pouch {
     public boolean isEmpty() {
         return tiles.isEmpty();
     }
+
+    // give out and receive tiles methods
 
 
 

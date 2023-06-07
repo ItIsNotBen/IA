@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
+// Third level class - Creates personal grid for each player and manages grid boundaries. has methods that assign tiles to each players' hand, enables them to place tiles on the grid.
+//                     Includes method that checks validity of the words each player has found.
+
 public class Player {
     private String name;
     private int points;
@@ -15,13 +18,17 @@ public class Player {
     private char selectedTile;
     private char selectedHandTile;
 
-    private Player(String name) {
+    public Player(String name) {
         this.name = name;
         points = 0;
         grid = new char[10][10];
         initGrid();
         hand = new ArrayList();
         selectedTile = ' ';
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void moveTile(int row, int column) {
@@ -49,6 +56,15 @@ public class Player {
         hand.remove(Character.valueOf(tile));
     }
 
+
+    private void initGrid() {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+
+                grid[i][j] = ' ';
+            }
+        }
+    }
 
     public void extendGrid(int i, int j) {
 
@@ -112,7 +128,7 @@ public class Player {
         return points;
     }
 
-    public void displayGrid() {
+    public void displayConsoleGrid() {
         for (int i = 0; i < grid.length; i++) {
             String line = Integer.toString(i) + "  " + Arrays.toString(grid[i]);
             if (Integer.toString(i).length() == 1) {
@@ -122,15 +138,6 @@ public class Player {
         }
     }
 
-    private void initGrid() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-
-                grid[i][j] = ' ';
-            }
-        }
-
-    }
 
     public void assignTiles(char[] tiles) {
         for (int i = 0; i < tiles.length; i++) {
@@ -155,13 +162,10 @@ public class Player {
 
     }
 
-    public void displayTiles() {
+    public void displayConsoleTiles() {
         System.out.println(hand.toString());
     }
 
-    public String getName() {
-        return name;
-    }
 
     public String[] findWords() {
 
@@ -205,22 +209,17 @@ public class Player {
         return words.toArray(new String[0]);
     }
 
-    public boolean checkWord() {
-        boolean validWord;
-        String[] foundWords = findWords();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("dictionary.txt"));
-            if (foundWords[foundWords.length - 1] != br.readLine()) {
-                br.readLine();
+    public boolean hasValidWords(WordLibrary wl) {
+//        String[] words = findWords();
+        String[] words = {"cbat", "bat", "log"};
+
+        for (int i = 0; i < words.length; i++) {
+            boolean isValid = wl.checkWordHash(words[i]);
+            if (!isValid) {
+                return false;
             }
-            br.close();
-            validWord = foundWords[foundWords.length - 1] == br.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-            validWord = false;
         }
-
-        return validWord;
+        return true;
     }
-
 }
+
