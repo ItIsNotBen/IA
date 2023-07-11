@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-//        Player player = new Player("Ben");
+
 //
 //        Controller controller = new Controller();
 ////        controller.run();
@@ -19,14 +19,15 @@ public class Main {
 //
 
 //        System.out.println(Arrays.toString(player.findWords()));
-
-        char[] hand = {'a', 'b', 'c', 'd', 'e'};
-        char[][] grid = {{' ', 'd', 'e', ' ', ' '}, {' ',' ',' ',' ',' '}, {' ',' ',' ',' ',' '},{' ', ' ', ' ', ' ', ' '}};
-
-
-        Window window = new Window(hand, grid);
-
-
+//        Player player = new Player("Ben");
+//
+//        char[] hand = player.getHand();
+//        char[][] grid = player.getGrid();
+//
+//        Window window = new Window(hand, grid);
+//
+        Controller contoller = new Controller();
+        contoller.run();
 
 
     }

@@ -9,11 +9,14 @@ public class Window extends JFrame {
 
     private JButton handButton;
     private JButton gridButton;
+    private Game game;
+    private Controller controller;
 
     public Window(char[] hand, char[][] grid) {
-        setSize(400, 400);
+        setSize(600, 750);
         JPanel handPanel = new JPanel();
-        handPanel.setSize(300,50);
+        handPanel.setSize(300, 100);
+//        game = controller.getGame();
 
         for (int i = 0; i < hand.length; i++) {
             char letter = hand[i];
@@ -26,8 +29,10 @@ public class Window extends JFrame {
                 }
             });
         }
-
         add(handPanel, BorderLayout.SOUTH);
+        setVisible(true);
+
+
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(grid.length, grid[0].length));
 
@@ -45,16 +50,31 @@ public class Window extends JFrame {
             }
         }
 
+
         add(gridPanel, BorderLayout.NORTH);
         setVisible(true);
     }
 
-    public char getHandButtonValue() {
+//    public void addPlayerGrid(char[][] playerGrid) {
+//        Player player = game.getPlayer();
+//        playerGrid = player.getGrid();
+//
+//        JButton[] buttons = new JButton[playerGrid.length];
+//
+//        for (int i = 0; i < playerGrid.length; ++i) {
+//            for (int j = 0; j < playerGrid.length - 1; j++) {
+//                buttons[i] = new JButton(Character.toString(playerGrid[i][j])); //need to convert char to String first
+//                this.add(buttons[i], BorderLayout.SOUTH);
+//            }
+
+
+/*    public char getHandButtonValue() {
         return handButton.getText().charAt(0);
     }
     public char getGridButtonValue() {
         return gridButton.getText().charAt(0);
-    }
+    }*/
+
 
 //    @Override
 //    public void actionPerformed(ActionEvent e) {
@@ -64,8 +84,4 @@ public class Window extends JFrame {
 //            System.out.println("This tile on the grid is: " + getGridButtonValue());
 //        }
 //    }
-
-
-
-
 }

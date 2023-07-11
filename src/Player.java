@@ -31,6 +31,15 @@ public class Player {
         return name;
     }
 
+    public char[] getHand() {
+       char[] handTiles = new char[hand.size()];
+       for (int i = 0; i < hand.size(); i++) {
+           handTiles[i] = (char) hand.get(i);
+       }
+        return handTiles;
+    }
+
+
     public void moveTile(int row, int column) {
         grid[row][column] = selectedTile;
         selectedTile = ' ';
@@ -124,6 +133,10 @@ public class Player {
         grid = newGrid;
     }
 
+    public char[][] getGrid() {
+        return grid;
+    }
+
     public int getPoints() {
         return points;
     }
@@ -137,6 +150,10 @@ public class Player {
             System.out.println(line);
         }
     }
+
+//    public void displayGrid(Player player) {
+
+//    }
 
 
     public void assignTiles(char[] tiles) {
@@ -159,6 +176,10 @@ public class Player {
 
     public boolean hasTile(char tile) {
         return hand.contains(tile);
+
+    }
+
+    public void displayTiles() {
 
     }
 

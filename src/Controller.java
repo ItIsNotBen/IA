@@ -7,6 +7,7 @@ public class Controller {
 
     private Game game;
     private String playerName;
+    private Window window;
 
 
     Controller() {
@@ -21,6 +22,7 @@ public class Controller {
     }
 
     public void run() {
+        window = new Window(game.getPlayer().getHand(), game.getPlayer().getGrid());
         game.dealTiles(14);
         // entering playing stage: choosing & placing tiles, creating their words, checking their words, gaining points, 'peel' to get tiles
         playingStage();
@@ -47,8 +49,7 @@ public class Controller {
     private void placeTile() {
         System.out.println("Here is your grid: ");
         Player player = game.getPlayer();
-        player.displayGrid();
-        game.displayPlayerTiles();
+//        game.displayPlayerTiles();
         WordLibrary wl = game.getWordLibrary();
         int x;
         int y;
